@@ -274,7 +274,7 @@ voxelsFound:
     if (mode == MULTIFILE) {
         char nameBuf[64];
         for (int i = 0; i < yCells; ++i) {
-            snprintf(nameBuf, 63, "%s%i.png", pngPath, i);
+            snprintf(nameBuf, 63, "%s%03i.png", pngPath, i);
             if (!stbi_write_png(nameBuf, pngWidth, voxYDim, 4, pngData + voxXDim * voxYDim * i, pngWidth * 4)) {
                 die("Failed to write Png image");
             }
