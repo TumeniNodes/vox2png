@@ -36,4 +36,10 @@ There is also a mode that gives each sprite cell its own png file:
 	
 Which produces numbered files for each Z layer, like this: output0.png, output1.png .. outputN.png
 
+If you're using GameMaker you might want your files to be suffixed by `_stripXX`, where `XX` is the amount of sprites in the sheet. This makes it possible to import the files directly into GameMaker. You can do this by typing this:
+
+	./vox2png input.vox output gamemaker
+	
+Which will produce a file in the form of `output_stripXX.png`, again, where `XX` is the amount of sprites/Z-layers.
+
 If you want to see a certain feature, just ask me and I'll add it. Or, if you know C, it shouldn't be hard to do it yourself.
