@@ -13,7 +13,8 @@ Source model:
 Resulting sprite sheet:
 ![To this](http://i.imgur.com/eAYoJAF.png)
 
-// TODO Add an in engine screenshot here
+Example of it in action (credit goes to /u/Im-German-Lets-Party):
+![screenshot](http://i.imgur.com/iRAElFU.png)
  
 Building and running
 ----------------------------
