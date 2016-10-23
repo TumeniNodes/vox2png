@@ -53,6 +53,7 @@ typedef enum {
     VERTICAL,
     SQUARE,
     MULTIFILE,
+    GAMEMAKER,
 } packMode;
 
 /* MagicaVoxel's default palette encoded as 256 RGBA colors */
@@ -125,14 +126,16 @@ void die(const char *msg) {
 int main(int argc, char **argv) {
     if (argc < 3 || argc > 4 || (argc >= 2 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0))) {
         printf("Usage:\n");
-        printf("    vox2png input.vox output.png [horizontal|vertical|square|multifile]\n");
+        printf("    vox2png input.vox output.png [horizontal|vertical|square|multifile|gamemaker]\n");
         printf("\n");
-        printf("  * The third argument specifies how the cells will be packed in the sprite sheet\n");
-        printf("      * horizontal puts all cells next to each other on the X axis of the sprite sheet\n");
-        printf("      * vertical does the same thing but on the Y axis\n");
-        printf("      * square goes left->right and top->bottom, like Minecraft's terrain.png\n");
-        printf("      * multifile makes a different file for each cell, don't put .png after the output file in this mode\n");
-        printf("        The default option is horizontal\n");
+        printf("  * The third argument specifies how the cells will be packed in the sprite sheet.\n");
+        printf("      * horizontal puts all cells next to each other on the X axis of the sprite sheet.\n");
+        printf("      * vertical does the same thing but on the Y axis.\n");
+        printf("      * square goes left->right and top->bottom, like Minecraft's terrain.png.\n");
+        printf("      * multifile makes a different file for each cell, don't put .png after the output file in this mode.\n");
+        printf("      * gamemaker is the same as horizontal, but it adds _stripN after the filename,\n");
+        printf("            which makes it easier to import in GameMaker. Don't put .png after the output file in this mode.\n");
+        printf("        The default option is horizontal.\n");
         exit(0);
     }
     packMode mode = HORIZONTAL;
@@ -147,6 +150,8 @@ int main(int argc, char **argv) {
             mode = SQUARE;
         } else if (strcmp(argv[3], "multifile") == 0) {
             mode = MULTIFILE;
+        } else if (strcmp(argv[3], "gamemaker") == 0) {
+            mode = GAMEMAKER;
         } else {
             die("Invalid packing mode");
         }
@@ -235,7 +240,7 @@ voxelsFound:
 
     int pngWidth, pngHeight;
     int xCells, yCells;
-    if (mode == HORIZONTAL) {
+    if (mode == HORIZONTAL || mode == GAMEMAKER) {
         pngWidth = voxXDim * voxZDim;
         pngHeight = voxYDim;
         xCells = voxZDim;
@@ -271,8 +276,8 @@ voxelsFound:
 
     /* Write the image data to the Png */
 
+    char nameBuf[64];
     if (mode == MULTIFILE) {
-        char nameBuf[64];
         for (int i = 0; i < yCells; ++i) {
             snprintf(nameBuf, 63, "%s%03i.png", pngPath, i);
             if (!stbi_write_png(nameBuf, pngWidth, voxYDim, 4, pngData + voxXDim * voxYDim * i, pngWidth * 4)) {
@@ -280,7 +285,12 @@ voxelsFound:
             }
         }
     } else {
-        if (!stbi_write_png(pngPath, pngWidth, pngHeight, 4, pngData, pngWidth * 4)) {
+        char *fileName = pngPath;
+        if (mode == GAMEMAKER) {
+            snprintf(nameBuf, 63, "%s_strip%02i.png", pngPath, voxZDim);
+            fileName = nameBuf;
+        }
+        if (!stbi_write_png(fileName, pngWidth, pngHeight, 4, pngData, pngWidth * 4)) {
             die("Failed to write Png image");
         }
     }
