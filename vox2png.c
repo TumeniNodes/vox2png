@@ -257,7 +257,7 @@ voxelsFound:
     if (!pngData) die("Couldn't allocate a buffer for the color data");
     for (int i = 0; i < voxCount; ++i) {
         voxel currentVoxel = voxVoxels[i];
-        color currentColor = voxPal[currentVoxel.colorIndex];
+        color currentColor = voxPal[(currentVoxel.colorIndex - 1 + 0xFF) % 0xFF];
 
         int dataX = currentVoxel.x;
         int dataY = currentVoxel.y;
