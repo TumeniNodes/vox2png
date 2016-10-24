@@ -13,8 +13,13 @@ Source model:
 Resulting sprite sheet:
 ![To this](http://i.imgur.com/eAYoJAF.png)
 
-Example of it in action (credit goes to /u/Im-German-Lets-Party):
+Examples of it in action:
+
+(credit goes to /u/Im-German-Lets-Party)  
 ![screenshot](http://i.imgur.com/iRAElFU.png)
+ 
+(credit goes to /u/Paragania)  
+![gifv](http://i.imgur.com/pubmR7n.gif)
  
 Building and running
 ----------------------------
